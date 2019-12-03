@@ -17,7 +17,7 @@ Ripper ripper = new Ripper("https://example.com", "Example")
 
 ### Fetching pages
 This library makes use of two main data structures: `FetchPattern` and `FetchedItem`.
-`FetchedPattern` contains the regular expression that will be matched in order to retrieve the `uri` and the `name` of a certain resource.
+`FetchPattern` contains the regular expression that will be matched in order to retrieve the `uri` and the `name` of a certain resource.
 
 Let's assume our pages have this uri. `/products/page/1`.
 
@@ -43,14 +43,16 @@ var images = ripper.FetchAllAsync(pages, pattern, "Products").Result;
 ```
 
 ### Downloading files
-After grabbing all the files we need, we can start downloading them using the `RipAllAsync` method. We can also specify an `IProgress<ProgressReport>` object that should be a delegate that informs the user about the current progress.
+After grabbing all the files we need, we can start downloading them using the `RipAllAsync` method. We can also supply an `IProgress<ProgressReport>` object that should be a delegate that informs the user about the current progress.
 
 ```csharp
 ripper.RipAllAsync(pics, true, new Progress<ProgressReport>(report =>
 {
     Console.Title = $"Demo Ripper | Ripping | {report.percent:0.00}%";
-    Console.WriteLine(report.message);
+    if (report.success) Console.WriteLine($"[{report.time.ToShortTimeString()}] Fetched {report.count} items from {report.finishedItem.uri}");
+    else Console.WriteLine($"[{report.time.ToShortTimeString()}] Failed to query {report.finishedItem.uri}. Reason: {report.error}");
 })).Wait();
 ```
+The progress can also be supplied to the `FetchAllAsync` method in a similar way.
 
 And we're done!
