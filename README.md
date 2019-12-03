@@ -49,8 +49,8 @@ After grabbing all the files we need, we can start downloading them using the `R
 ripper.RipAllAsync(pics, true, new Progress<ProgressReport>(report =>
 {
     Console.Title = $"Demo Ripper | Ripping | {report.percent:0.00}%";
-    if (report.success) Console.WriteLine($"[{report.time.ToShortTimeString()}] Fetched {report.count} items from {report.finishedItem.uri}");
-    else Console.WriteLine($"[{report.time.ToShortTimeString()}] Failed to query {report.finishedItem.uri}. Reason: {report.error}");
+    if (report.success) Console.WriteLine($"[{report.time.ToShortTimeString()}] Downloaded {report.finishedItem.uri} to {report.finishedItem.path}");
+    else Console.WriteLine($"[{report.time.ToShortTimeString()}] Failed to download {report.finishedItem.uri}. Reason: {report.error}");
 })).Wait();
 ```
 The progress can also be supplied to the `FetchAllAsync` method in a similar way.
