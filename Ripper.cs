@@ -151,14 +151,7 @@ namespace MediaRipper
                 return fetched;
             });
 
-            var results = await Task.WhenAll(tasks);
-            List<FetchedItem> joined = new List<FetchedItem>();
-            foreach (var result in results)
-            {
-                joined.AddRange(result);
-            }
-
-            return joined;
+            return (await Task.WhenAll(tasks)).SelectMany(item => item);
         }
 
         /// <summary>
