@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MediaRipper</name>
+    </assembly>
+    <members>
+        <member name="T:MediaRipper.FetchedItem">
+            <summary>
+            A remote resource information that was fetched from a webpage.
+            </summary>
+        </member>
+        <member name="F:MediaRipper.FetchedItem.uri">
+            <summary>The remote resource's uri (can be relative or absolute).</summary>
+        </member>
+        <member name="F:MediaRipper.FetchedItem.name">
+            <summary>The resource's name for subfolder creation (will be made valid first).</summary>
+        </member>
+        <member name="F:MediaRipper.FetchedItem.path">
+            <summary>The resource's base folder on disk.</summary>
+        </member>
+        <member name="M:MediaRipper.FetchedItem.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a fetched item.
+            </summary>
+            <param name="uri">The remote resource's uri (can be relative or absolute)</param>
+            <param name="name">The resource's name for subfolder creation (will be made valid first)</param>
+            <param name="basePath">The resource's base folder on disk</param>
+        </member>
+        <member name="T:MediaRipper.FetchPattern">
+            <summary>
+            A regex pattern and output format for parsing resources from a webpage.
+            </summary>
+        </member>
+        <member name="F:MediaRipper.FetchPattern.pattern">
+            <summary>The regex pattern.</summary>
+        </member>
+        <member name="F:MediaRipper.FetchPattern.nameFormat">
+            <summary>The format of the output name, where [i] will be replaced with the i-th captured group.</summary>
+        </member>
+        <member name="F:MediaRipper.FetchPattern.uriFormat">
+            <summary>The format of the output uri, where [i] will be replaced with the i-th captured group.</summary>
+        </member>
+        <member name="M:MediaRipper.FetchPattern.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a fetch pattern.
+            </summary>
+            <param name="pattern">The regex pattern</param>
+            <param name="nameFormat">The format of the output name, where [i] will be replaced with the i-th captured group</param>
+            <param name="uriFormat">The format of the output uri, where [i] will be replaced with the i-th captured group</param>
+        </member>
+        <member name="T:MediaRipper.ProgressReport">
+            <summary>
+            A report of the current progress of a fetch or rip action.
+            </summary>
+        </member>
+        <member name="F:MediaRipper.ProgressReport.percent">
+            <summary>The percentage of completion.</summary>
+        </member>
+        <member name="F:MediaRipper.ProgressReport.finishedItem">
+            <summary>The item that was queried.</summary>
+        </member>
+        <member name="F:MediaRipper.ProgressReport.success">
+            <summary>Whether the query was successful.</summary>
+        </member>
+        <member name="F:MediaRipper.ProgressReport.error">
+            <summary>The exception message in case the query was not successful.</summary>
+        </member>
+        <member name="F:MediaRipper.ProgressReport.time">
+            <summary>The time at which the query was completed.</summary>
+        </member>
+        <member name="F:MediaRipper.ProgressReport.count">
+            <summary>The percentage of completion.</summary>
+        </member>
+        <member name="M:MediaRipper.ProgressReport.#ctor(System.Single,MediaRipper.FetchedItem,System.Boolean,System.String,System.DateTime,System.Int32)">
+            <summary>
+            Initializes a progress report.
+            </summary>
+            <param name="percent">The percentage of completion</param>
+            <param name="finishedItem">The item that was queried</param>
+            <param name="success">Whether the query was successful</param>
+            <param name="error">The exception message in case the query was not successful</param>
+            <param name="time">The time at which the query was completed</param>
+            <param name="count">The percentage of completion</param>
+        </member>
+        <member name="T:MediaRipper.Ripper">
+            <summary>
+            A ripper for remote media on a website.
+            </summary>
+        </member>
+        <member name="P:MediaRipper.Ripper.Domain">
+            <summary>The base domain of the website.</summary>
+            <example>https://example.com</example>
+        </member>
+        <member name="P:MediaRipper.Ripper.RootFolder">
+            <summary>The root folder on disk where the structured data will be downloaded.</summary>
+        </member>
+        <member name="P:MediaRipper.Ripper.Threads">
+            <summary>The amount of threads to use for parallelized tasks.</summary>
+        </member>
+        <member name="M:MediaRipper.Ripper.#ctor(System.Uri,System.String)">
+            <summary>
+            Initializes a ripper from a Uri.
+            </summary>
+            <param name="domain">The base domain of the website</param>
+            <param name="rootFolder">The root folder on disk where the structured data will be downloaded</param>
+        </member>
+        <member name="M:MediaRipper.Ripper.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a ripper from a domain string.
+            </summary>
+            <param name="domain">The base domain of the website</param>
+            <param name="rootFolder">The root folder on disk where the structured data will be downloaded</param>
+        </member>
+        <member name="M:MediaRipper.Ripper.FetchAsync(System.String,System.String,System.Collections.Generic.IEnumerable{MediaRipper.FetchPattern})">
+            <summary>
+            Fetches all items from a remote page that match any of the given patterns.
+            </summary>
+            <param name="pageUri">The relative or absolute uri of the resource to query</param>
+            <param name="baseFolder">The base folder where the structured data will be downloaded during ripping</param>
+            <param name="patterns">The regex patterns which can match the required resource</param>
+            <returns>All the found items</returns>
+        </member>
+        <member name="M:MediaRipper.Ripper.FetchAsync(System.String,System.String,MediaRipper.FetchPattern)">
+            <summary>
+            Fetches all items from a remote page that match a given pattern.
+            </summary>
+            <param name="pageUri">The relative or absolute uri of the resource to query</param>
+            <param name="baseFolder">The base folder where the structured data will be downloaded during ripping</param>
+            <param name="pattern">The regex pattern which can match the required resource</param>
+            <returns>All the found items</returns>
+        </member>
+        <member name="M:MediaRipper.Ripper.FetchAllAsync(System.Collections.Generic.IEnumerable{MediaRipper.FetchedItem},System.Collections.Generic.IEnumerable{MediaRipper.FetchPattern},System.String,System.IProgress{MediaRipper.ProgressReport})">
+            <summary>
+            Fetches all resources from a given set of pages in a parallelized way.
+            </summary>
+            <param name="items">The resources to query</param>
+            <param name="patterns">The regex patterns which can match the required resource</param>
+            <param name="baseFolder">The name of the subfolder in which the resources will be downloaded</param>
+            <param name="progress">The progress reporting delegate</param>
+            <returns>The fetched resources</returns>
+        </member>
+        <member name="M:MediaRipper.Ripper.FetchAllAsync(System.Collections.Generic.IEnumerable{MediaRipper.FetchedItem},MediaRipper.FetchPattern,System.String,System.IProgress{MediaRipper.ProgressReport})">
+            <summary>
+            Fetches all resources from a given set of pages in a parallelized way.
+            </summary>
+            <param name="items">The resources to query</param>
+            <param name="pattern">The regex pattern which can match the required resource</param>
+            <param name="baseFolder">The name of the subfolder in which the resources will be downloaded</param>
+            <param name="progress">The progress reporting delegate</param>
+            <returns>The fetched resources</returns>
+        </member>
+        <member name="M:MediaRipper.Ripper.RipAllAsync(System.Collections.Generic.IEnumerable{MediaRipper.FetchedItem},System.Boolean,System.IProgress{MediaRipper.ProgressReport})">
+            <summary>
+            Downloads a collection of fetched items to the disk.
+            </summary>
+            <param name="items">The items to download</param>
+            <param name="skipExisting">Whether to skip the items that already exist on disk</param>
+            <param name="progress">The progress reporting delegate</param>
+        </member>
+        <member name="M:MediaRipper.Ripper.RipAsync(MediaRipper.FetchedItem)">
+            <summary>
+            Downloads a fetched item to disk.
+            </summary>
+            <param name="item">The item to download</param>
+        </member>
+        <member name="M:MediaRipper.Ripper.WithSessionCookie(System.Net.Cookie)">
+            <summary>
+            Adds a session cookie to the ripper's HttpClient.
+            </summary>
+            <param name="cookie">The cookie to add</param>
+        </member>
+        <member name="M:MediaRipper.Ripper.WithSessionCookie(System.String,System.String)">
+            <summary>
+            Adds a session cookie to the ripper's HttpClient, using the previously defined domain and a root path.
+            </summary>
+            <param name="name">The cookie name</param>
+            <param name="value">The cookie value</param>
+        </member>
+        <member name="M:MediaRipper.Ripper.WithHeader(System.String,System.String)">
+            <summary>
+            Adds a session header to the ripper's HttpClient.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MediaRipper.Ripper.WithTimeout(System.Int32)">
+            <summary>
+            Sets the timeout for HTTP requests.
+            </summary>
+            <param name="seconds">The maximum amount of seconds to wait before failing</param>
+        </member>
+        <member name="M:MediaRipper.Ripper.WithThreads(System.Int32)">
+            <summary>
+            Sets the amount of parallel threads for fetching and ripping.
+            </summary>
+            <param name="threads">The amount of parallel threads that can be active at the same time</param>
+        </member>
+    </members>
+</doc>
