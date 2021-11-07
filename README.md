@@ -31,7 +31,7 @@ It's possible to specify custom formats for the `uri` and the `name` by using ma
 After that we can fetch a list of pages that we can access. We will use the async methods as synchronous because we're in a test console application, but this library is built to work with any graphical interface too. We provide the page where we can find all the other pages we want to fetch, and we do not provide a folder name so that the default one will be used.
 
 ```csharp
-var pages = ripper.FetchAsync("/products.html", "", pattern).Result.Distinct();
+var pages = (await ripper.FetchAsync("/products.html", "", pattern)).Distinct();
 ```
 
 ### Fetching files
@@ -39,19 +39,19 @@ Now we can feed the array of `FetchedItem`s to a new method which will fetch mor
 
 ```csharp
 pattern = new FetchPattern("/products/images/([a-zA-Z0-9_-]+.jpg)");
-var images = ripper.FetchAllAsync(pages, pattern, "Products").Result;
+var images = await ripper.FetchAllAsync(pages, pattern, "Products");
 ```
 
 ### Downloading files
 After grabbing all the files we need, we can start downloading them using the `RipAllAsync` method. We can also supply an `IProgress<ProgressReport>` object that should be a delegate that informs the user about the current progress.
 
 ```csharp
-ripper.RipAllAsync(pics, true, new Progress<ProgressReport>(report =>
+await ripper.RipAllAsync(pics, true, new Progress<ProgressReport>(report =>
 {
     Console.Title = $"Demo Ripper | Ripping | {report.percent:0.00}%";
     if (report.success) Console.WriteLine($"[{report.time.ToShortTimeString()}] Downloaded {report.finishedItem.uri} to {report.finishedItem.path}");
     else Console.WriteLine($"[{report.time.ToShortTimeString()}] Failed to download {report.finishedItem.uri}. Reason: {report.error}");
-})).Wait();
+}));
 ```
 The progress can also be supplied to the `FetchAllAsync` method in a similar way.
 
